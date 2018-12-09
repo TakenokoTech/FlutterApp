@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import '../viewmodel/Sample1ViewModel.dart';
 import '../utils/FLog.dart';
 import '../model/Sample1Model.dart';
+import '../view/Sample2View.dart';
+
+// String
+final String textTitle = "Sample Flutter";
 
 class Sample1View extends StatelessWidget {
+  static String get path => "/first";
+
   Sample1ViewModel viewModel = Sample1ViewModelImpl();
 
   Sample1View() {
@@ -15,11 +21,13 @@ class Sample1View extends StatelessWidget {
 
   Widget build(BuildContext context) {
     flog.info("Sample1View build. ");
-    return new StreamBuilder<List<Sample1>>(
+    return Scaffold(
+      appBar: AppBar(title: Text(textTitle), actions: _actionList(context)),
+      body: new StreamBuilder<List<Sample1>>(
         stream: viewModel.stream,
-        builder: (_, snapshot) {
-          return _buildListView(snapshot);
-        });
+        builder: (_, snapshot) => _buildListView(snapshot),
+      ),
+    );
   }
 
   Widget _buildListView(AsyncSnapshot snapshot) {
@@ -52,5 +60,20 @@ class Sample1View extends StatelessWidget {
         }
       },
     );
+  }
+
+  List<Widget> _actionList(BuildContext context) {
+    return <Widget>[
+      new IconButton(
+          icon: const Icon(Icons.add_box),
+          onPressed: () {
+            Navigator.of(context).pushNamed(Sample1View.path);
+          }),
+      new IconButton(
+          icon: const Icon(Icons.tab),
+          onPressed: () {
+            Navigator.of(context).pushNamed(Sample2View.path);
+          }),
+    ];
   }
 }

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'view/RootView.dart';
+import 'view/Sample1View.dart';
+import 'view/Sample2View.dart';
 import 'package:logging/logging.dart';
 import 'utils/FLog.dart';
 
 void main() {
   fLogInit();
-  runApp(MyApp());
+  runApp(Main());
 }
 
-class MyApp extends StatelessWidget {
+class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,6 +19,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: RootView(), // MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        Sample1View.path: (BuildContext context) => Sample1View(),
+        Sample2View.path: (BuildContext context) => Sample2View(),
+      },
     );
   }
 }
