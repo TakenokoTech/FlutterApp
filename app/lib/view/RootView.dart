@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:rxdart/subjects.dart';
+import '../viewmodel/RootViewModel.dart';
 import './Sample1View.dart';
 import './Sample2View.dart';
+import '../utils/FLog.dart';
 
 class RootView extends StatelessWidget {
   static String get path => "/root";
-  BehaviorSubject<String> str = BehaviorSubject(seedValue: "---");
+
+  RootViewModel viewModel = RootViewModelImpl();
 
   @override
   Widget build(BuildContext context) {
+    flog.info("RootView build. ");
     return Scaffold(
         appBar: AppBar(title: Text(textTitle), actions: _actionList(context)),
         drawer: new Drawer(
@@ -36,22 +40,24 @@ class RootView extends StatelessWidget {
               ListTile(
                 title: new Text("About"),
                 onTap: () {
-                  str.add("About");
+                  viewModel.addition.add("About");
                 },
               ),
               ListTile(
                 title: new Text("Help"),
                 onTap: () {
-                  str.add("Help");
+                  viewModel.addition.add("Help");
                 },
               )
             ],
           ),
         ),
         body: new StreamBuilder<String>(
-          stream: str,
-          builder: (_, snapshot) => Center(child: Text(snapshot.data)),
-        ));
+            stream: viewModel.stream,
+            builder: (_, snapshot) {
+              String str = snapshot.data;
+              return str == null ? new Container() : Center(child: Text(str));
+            }));
   }
 
   List<Widget> _actionList(BuildContext context) {
